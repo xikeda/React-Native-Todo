@@ -14,6 +14,7 @@ export default class App extends React.Component {
   render() {
       let notes = this.state.notes.map((note, key) => {
             return (
+                
                     <Card 
                         key={key}
                         keyval={key}
