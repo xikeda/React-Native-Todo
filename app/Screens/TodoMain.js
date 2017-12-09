@@ -12,18 +12,29 @@ export default class TodoMain extends React.Component {
             note: ''
         }
     }
-  render() {
-      let notes = this.state.notes.map((note, key) => {
-            return (
 
-                    <Card
-                        key={key}
-                        keyval={key}
-                        note={note}
-                        onPress={ () => this.deletMethod(key)}
-                    />
-        )
-      })
+    componentDidMount(){
+      firebase.database().ref("todo").on("value", snap => {
+       const notes = snap.val()
+        console.log("data", notes)
+         this.setState([notes])
+          })
+      console.log(this.state.notes)
+      }
+
+
+   render() {
+         let notes = this.state.notes.map((note, key) => {
+            console.log(note)
+               return (
+                       <Card
+                           key={key}
+                           keyval={key}
+                           note={note}
+                           onPress={ () => this.deleteMethod(key)}
+                       />
+           )
+         })
 
     return (
       <View style={styles.container}>
@@ -55,7 +66,7 @@ export default class TodoMain extends React.Component {
       </View>
     );
   }
-  deletMethod(key) {
+  deleteMethod(key) {
      this.state.notes.splice(key, 1)
      this.setState({notes: this.state.notes})
      console.log("this is delete" + this.state.notes)
